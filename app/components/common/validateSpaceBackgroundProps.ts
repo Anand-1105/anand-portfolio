@@ -29,7 +29,8 @@ export function validateSpaceBackgroundProps(
   props: SpaceBackgroundConfig,
   isDev = false
 ): SpaceBackgroundConfig {
-  let { basePosition, baseScale, parallaxIntensity, rotationSpeed, enableParallax, enableRotation } = props
+  let { basePosition, baseScale, parallaxIntensity, rotationSpeed } = props
+  const { enableParallax, enableRotation } = props
 
   // Validate basePosition: must be a tuple of 3 finite numbers (Requirement 7.1)
   if (

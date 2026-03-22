@@ -8,7 +8,7 @@
  * **Validates: Requirements 1.4, 7.1, 7.2, 7.3, 7.4**
  */
 
-import { describe, test, expect } from 'vitest'
+import { describe, test } from 'vitest'
 import * as fc from 'fast-check'
 import {
   validateSpaceBackgroundProps,

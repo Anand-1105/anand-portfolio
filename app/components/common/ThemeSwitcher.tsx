@@ -3,7 +3,7 @@
 import { useGSAP } from "@gsap/react";
 import { usePortalStore, useThemeStore } from "@stores";
 import gsap from "gsap";
-import Image from 'next/image';
+
 import { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 

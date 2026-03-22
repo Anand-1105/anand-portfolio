@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect, Component, ErrorInfo } from 'react'
+import { useRef, useState, useEffect, Component } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { useScroll, useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
@@ -93,7 +93,7 @@ class SpaceErrorBoundary extends Component<SpaceErrorBoundaryProps, SpaceErrorBo
     return { hasError: true }
   }
 
-  componentDidCatch(error: Error, _info: ErrorInfo) {
+  componentDidCatch(error: Error) {
     this.props.onError(error)
   }
 

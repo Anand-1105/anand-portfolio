@@ -7,6 +7,7 @@ const TITLES = [
   "Cloud and DevOps"
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const TypingText = ({ position, fontProps }: { position: [number, number, number], fontProps: any }) => {
   const [text, setText] = useState("");
   const [titleIndex, setTitleIndex] = useState(0);

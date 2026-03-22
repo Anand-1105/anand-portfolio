@@ -5,8 +5,8 @@ import { forwardRef, JSX } from 'react';
 import * as THREE from 'three';
 
 export const Mountain = forwardRef<THREE.Group, JSX.IntrinsicElements['group']>(function Mountain(props, ref) {
+  const { scene } = useGLTF('/models/snowy_mountian.glb');
   try {
-    const { scene } = useGLTF('/models/snowy_mountian.glb');
 
     if (!scene || scene.children.length === 0) {
       console.warn('[Mountain] Scene is empty or invalid');

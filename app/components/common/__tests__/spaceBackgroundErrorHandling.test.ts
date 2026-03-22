@@ -231,7 +231,7 @@ describe('Requirement 8.3 — retry after 2 seconds', () => {
   })
 
   it('retry is not triggered before 2000ms have elapsed', () => {
-    let retryTriggered = false
+    const retryTriggered = false
     const ctrl = createRetryController(() => {})
     const err = new Error('load error')
 

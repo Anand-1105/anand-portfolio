@@ -8,9 +8,11 @@ Title: HD Earth
 */
 
 import * as THREE from 'three'
-import React from 'react'
+import React, { JSX } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+
+type GLTFAction = THREE.AnimationAction
 
 type GLTFResult = GLTF & {
   nodes: {

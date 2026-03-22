@@ -13,6 +13,7 @@ import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   nodes: {}
   materials: {
     ['Scene_-_Root']: THREE.PointsMaterial
@@ -20,6 +21,7 @@ type GLTFResult = GLTF & {
 }
 
 export function Space(props: JSX.IntrinsicElements['group']) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { nodes, materials } = useGLTF('/models/need_some_space.glb') as GLTFResult & { nodes: any }
   return (
     <group {...props} dispose={null}>
