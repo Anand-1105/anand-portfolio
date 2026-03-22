@@ -29,7 +29,7 @@ type GLTFResult = GLTF & {
 }
 
 export function Model(props: JSX.IntrinsicElements['group']) {
-  const { nodes, materials } = useGLTF('/hd_earth.glb') as GLTFResult
+  const { nodes, materials } = useGLTF('/models/hd_earth.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group scale={0.01}>
@@ -41,4 +41,4 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/hd_earth.glb')
+useGLTF.preload('/models/hd_earth.glb')
