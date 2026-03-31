@@ -13,7 +13,7 @@ export const Mountain = forwardRef<THREE.Group, JSX.IntrinsicElements['group']>(
     }
 
     return <group ref={ref} {...props}><primitive object={scene} dispose={null} /></group>;
-  } catch (error) {
+  } catch {
     return null;
   }
 });
