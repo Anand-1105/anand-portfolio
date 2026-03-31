@@ -1,5 +1,5 @@
-# anandsingh.github.io
-Hello there! I'm Anand Singh, frontend engineer by profession, a creative at heart.
+README
+Hello there! I'm Anand Singh, fullstack engineer by day, a valorant noob by night.
 
 This the updated version of my personal website which is now in 3D. LFG!
 
