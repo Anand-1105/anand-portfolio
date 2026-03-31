@@ -69,6 +69,13 @@ export default function RootLayout({
     <html lang="en" className="overscroll-y-none">
       <head>
         <script dangerouslySetInnerHTML={{ __html: `localStorage.removeItem('theme-storage');` }} />
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+              navigator.serviceWorker.register('/sw.js');
+            });
+          }
+        `}} />
       </head>
       <body
         className={`${soriaFont.variable} ${vercettiFont.variable} font-sans antialiased`}
