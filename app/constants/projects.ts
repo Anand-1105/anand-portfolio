@@ -10,7 +10,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Everwo',
-    date: 'May 2024',
+    date: 'May 2025',
     subtext: 'A university centric social media platform for you to meet over 500 people with your interests.',
     url: 'https://github.com/worknet-hub/everwodeployed',
   },
