@@ -45,10 +45,10 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
       .to(projectRef.current.position, { z: hovered ? 1 : 0, duration: 0.2 }, 0)
       .to(projectRef.current.position, { y: hovered ? 0.4 : 0 }, 0)
       .to(projectRef.current.scale, { x: hovered ? 1.3 : 1, y: hovered ? 1.3 : 1, z: hovered ? 1.3 : 1 }, 0)
-      .to(title.position, { y: hovered ? 0.7 : -0.8 }, 0)
-      .to(textBox.position, { y: hovered ? 0.7 : 0 }, 0)
+      .to(title.position, { y: hovered ? 0.7 : -0.6 }, 0)
+      .to(textBox.position, { y: hovered ? 0.7 : 0.8 }, 0)
       .to(textBox, { fillOpacity: hovered ? 1 : 0, duration: 0.4 }, 0)
-      .to(dateGroup.position, { y: hovered ? 2.6 : 1.4 }, 0)
+      .to(dateGroup.position, { y: hovered ? 2.6 : 0.7 }, 0)
       .to(mesh.scale, { y: hovered ? 2 : 1 }, 0)
       .to((mesh as THREE.Mesh).material, { opacity: hovered ? 0.98 : 0.92 }, 0)
       .to(mesh.position, { y: hovered ? 1 : 0 }, 0);
@@ -99,14 +99,14 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
         </mesh>
         <Text
           {...titleProps}
-          position={[-1.9, -0.8, 0.101]}
+          position={[-1.9, -0.6, 0.101]}
           anchorX="left"
           anchorY="bottom"
           maxWidth={4}
           fontSize={0.8}>
           {project.title}
         </Text>
-        <group position={[-1.25, 1.4, 0.01]}>
+        <group position={[-1.25, 0.7, 0.01]}>
           <mesh>
             <planeGeometry args={[1.7, 0.4, 1]} />
             <meshBasicMaterial color="#777" opacity={0} wireframe />
@@ -122,7 +122,7 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
         <Text
           {...subtitleProps}
           maxWidth={3.8}
-          position={[-1.9, 2.3, 0.1]}
+          position={[-1.9, 0.8, 0.1]}
           fontSize={0.2}>
           {project.subtext}
         </Text>
