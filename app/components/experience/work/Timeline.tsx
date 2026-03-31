@@ -139,7 +139,7 @@ const Timeline = ({ progress }: { progress: number }) => {
 
   return (
     <group position={[0, -0.1, -0.1]}>
-      <Mountain ref={mountainRef} scale={[300, 400, 200]} position={[0, -8, -100]} rotation={[0.1, 0, 0]} />
+      {isActive && <Mountain ref={mountainRef} scale={[300, 400, 200]} position={[0, -8, -100]} rotation={[0.1, 0, 0]} />}
       <Line points={visibleCurvePoints} color="white" lineWidth={3} />
       {visibleDashedCurvePoints.length > 0 && (
         <Line

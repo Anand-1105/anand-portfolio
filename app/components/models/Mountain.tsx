@@ -9,15 +9,13 @@ export const Mountain = forwardRef<THREE.Group, JSX.IntrinsicElements['group']>(
   try {
 
     if (!scene || scene.children.length === 0) {
-      console.warn('[Mountain] Scene is empty or invalid');
       return null;
     }
 
     return <group ref={ref} {...props}><primitive object={scene} dispose={null} /></group>;
   } catch (error) {
-    console.error('[Mountain] Failed to load GLB:', error);
     return null;
   }
 });
 
-useGLTF.preload('/models/snowy_mountian.glb');
+// No eager preload — 30MB model loaded on demand when Work portal opens

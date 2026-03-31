@@ -2,11 +2,10 @@
 
 import { useGLTF } from '@react-three/drei'
 
-// Preload all models so they're cached before the scene needs them
+// Only preload models visible on initial load
 useGLTF.preload('/models/window.glb')
-useGLTF.preload('/models/dalithe_persistence_of_memory.glb')
-useGLTF.preload('/models/wanderer_above_the_sea_of_fog.glb')
-useGLTF.preload('/models/snowy_mountian.glb')
+// wanderer and memory are unused — not preloaded
+// snowy_mountian.glb is 30MB — loaded on demand when Work portal opens
 
 const Preloader = () => null;
 export default Preloader;
