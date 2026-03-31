@@ -29,5 +29,3 @@ export function Space(props: JSX.IntrinsicElements['group']) {
     </group>
   )
 }
-
-useGLTF.preload('/models/need_some_space.glb')

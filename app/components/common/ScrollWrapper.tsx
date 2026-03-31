@@ -2,17 +2,18 @@
 
 import { useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
+import { useRef } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 
 import { usePortalStore, useScrollStore } from "@stores";
-import { SpaceBackground } from "./SpaceBackground";
 
 const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) => {
   const { camera } = useThree();
   const data = useScroll();
   const isActive = usePortalStore((state) => !!state.activePortalId);
   const setScrollProgress = useScrollStore((state) => state.setScrollProgress);
+  const lastProgressRef = useRef(0);
 
   useFrame((state, delta) => {
     if (data) {
@@ -25,10 +26,13 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
         camera.position.y = THREE.MathUtils.damp(camera.position.y, -37 * b, 7, delta);
         camera.position.z = THREE.MathUtils.damp(camera.position.z, 5 + 10 * d, 7, delta);
 
-        setScrollProgress(data.range(0, 1));
+        const progress = data.range(0, 1);
+        if (Math.abs(progress - lastProgressRef.current) > 0.005) {
+          lastProgressRef.current = progress;
+          setScrollProgress(progress);
+        }
       }
 
-      // Move camera slightly on mouse movement.
       if (!isMobile && !isActive) {
         camera.rotation.y = THREE.MathUtils.lerp(camera.rotation.y, -(state.pointer.x * Math.PI) / 90, 0.05);
       }
@@ -38,18 +42,9 @@ const ScrollWrapper = (props: { children: React.ReactNode | React.ReactNode[]}) 
   const children = Array.isArray(props.children) ? props.children : [props.children];
 
   return <>
-    {/* Background layer — renders before all foreground content */}
-    <SpaceBackground
-      basePosition={[0, -50, -100]}
-      baseScale={180}
-      parallaxIntensity={0.3}
-      rotationSpeed={0.05}
-    />
-    {children.map((child, index) => {
-      return <group key={index}>
-        {child}
-      </group>
-    })}
+    {children.map((child, index) => (
+      <group key={index}>{child}</group>
+    ))}
   </>
 }
 

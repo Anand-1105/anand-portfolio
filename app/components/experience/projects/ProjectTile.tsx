@@ -1,7 +1,7 @@
 import { Edges, Text, TextProps } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import gsap from "gsap";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 
@@ -20,7 +20,6 @@ interface ProjectTileProps {
 const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: ProjectTileProps) => {
   const projectRef = useRef<THREE.Group>(null);
   const hoverAnimRef = useRef<gsap.core.Timeline | null>(null);
-  const [hovered, setHovered] = useState(false);
   const isProjectSectionActive = usePortalStore((state) => state.activePortalId === "projects");
 
   const titleProps = useMemo(() => ({
@@ -35,7 +34,7 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
     anchorY: "top",
   }), []);
 
-  useEffect(() => {
+  const runHoverAnim = (hovered: boolean) => {
     if (!projectRef.current) return;
     hoverAnimRef.current?.kill();
 
@@ -45,32 +44,26 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
     hoverAnimRef.current
       .to(projectRef.current.position, { z: hovered ? 1 : 0, duration: 0.2 }, 0)
       .to(projectRef.current.position, { y: hovered ? 0.4 : 0 }, 0)
-      .to(projectRef.current.scale, {
-        x: hovered ? 1.3 : 1,
-        y: hovered ? 1.3 : 1,
-        z: hovered ? 1.3 : 1,
-      }, 0)
+      .to(projectRef.current.scale, { x: hovered ? 1.3 : 1, y: hovered ? 1.3 : 1, z: hovered ? 1.3 : 1 }, 0)
       .to(title.position, { y: hovered ? 0.7 : -0.8 }, 0)
       .to(textBox.position, { y: hovered ? 0.7 : 0 }, 0)
-      // .to(textBox.scale, { y: hovered ? 1 : 0, x: hovered ? 1 : 0 }, 0)
       .to(textBox, { fillOpacity: hovered ? 1 : 0, duration: 0.4 }, 0)
       .to(dateGroup.position, { y: hovered ? 2.6 : 1.4 }, 0)
       .to(mesh.scale, { y: hovered ? 2 : 1 }, 0)
       .to((mesh as THREE.Mesh).material, { opacity: hovered ? 0.98 : 0.92 }, 0)
       .to(mesh.position, { y: hovered ? 1 : 0 }, 0);
 
-    if (project.url) {
+    if (project.url && button) {
       hoverAnimRef.current
         .to(button.scale, { y: hovered ? 1 : 0, x: hovered ? 1 : 0 }, 0)
         .to(button.position, { z: hovered ? 0.3 : -1 }, 0);
     }
-  }, [hovered]);
+  };
 
+  // Mobile: trigger hover anim when activeId changes
   useEffect(() => {
-    if (isMobile) {
-      setHovered(activeId === index);
-    }
-  }, [isMobile, activeId]);
+    if (isMobile) runHoverAnim(activeId === index);
+  }, [activeId]);
 
   useEffect(() => {
     if (projectRef.current) {
@@ -96,8 +89,8 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
       position={position}
       rotation={rotation}
       onClick={onClick}
-      onPointerOver={() => !isMobile && isProjectSectionActive && setHovered(true)}
-      onPointerOut={() => !isMobile && isProjectSectionActive && setHovered(false)}>
+      onPointerOver={() => { if (!isMobile && isProjectSectionActive) runHoverAnim(true); }}
+      onPointerOut={() => { if (!isMobile && isProjectSectionActive) runHoverAnim(false); }}>
       <group ref={projectRef}>
         <mesh>
           <planeGeometry args={[4.2, 2, 1]} />
@@ -130,7 +123,6 @@ const ProjectTile = ({ project, index, position, rotation, activeId, onClick }: 
           {...subtitleProps}
           maxWidth={3.8}
           position={[-1.9, 2.3, 0.1]}
-          // scale={[0, 0, 1]}
           fontSize={0.2}>
           {project.subtext}
         </Text>

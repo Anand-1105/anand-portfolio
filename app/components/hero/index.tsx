@@ -1,8 +1,6 @@
 'use client';
 
-import { Text } from "@react-three/drei";
-
-import { useProgress } from "@react-three/drei";
+import { Text, useProgress } from "@react-three/drei";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
@@ -17,13 +15,10 @@ const Hero = () => {
 
   useEffect(() => {
     if (progress === 100 && titleRef.current) {
-      gsap.fromTo(titleRef.current.position, {
-        y: -10,
-        duration: 1,
-      }, {
-        y: 0,
-        duration: 3
-      });
+      gsap.fromTo(titleRef.current.position,
+        { y: -10 },
+        { y: 0, duration: 3 }
+      );
     }
   }, [progress]);
 
@@ -42,8 +37,8 @@ const Hero = () => {
       </group>
       <Space position={[-50, -200, -50]} scale={250} />
       <group position={[0, -25, 5.69]}>
-        <pointLight castShadow position={[1, 1, -2.5]} intensity={60} distance={10}/>
-        <WindowModel receiveShadow/>
+        <pointLight position={[1, 1, -2.5]} intensity={60} distance={10}/>
+        <WindowModel />
         <TextWindow/>
       </group>
     </>

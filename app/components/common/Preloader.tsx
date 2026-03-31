@@ -1,29 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { Memory } from '../models/Memory'
-import { Wanderer } from '../models/Wanderer'
-import WindowModel from '../models/WindowModel'
+import { useGLTF } from '@react-three/drei'
 
-// List of models to preload.
-const MODELS = [WindowModel, Memory, Wanderer];
+// Preload all models so they're cached before the scene needs them
+useGLTF.preload('/models/window.glb')
+useGLTF.preload('/models/dalithe_persistence_of_memory.glb')
+useGLTF.preload('/models/wanderer_above_the_sea_of_fog.glb')
+useGLTF.preload('/models/snowy_mountian.glb')
 
-const Preloader = () => {
-  const [visible, setVisible] = useState(true);
-
-  // Hacky way to preload the models by setting them on to the scene and
-  // removing them after a timeout as the base canvas is shown after a delay.
-  useEffect(() => {
-    setTimeout(() => {
-      setVisible(false);
-    }, 0);
-  }, []);
-
-  return (<>
-    {MODELS.map((Component, index) => (
-      <Component key={index} visible={visible}/>
-    ))}
-  </>)
-}
-
+const Preloader = () => null;
 export default Preloader;

@@ -5,12 +5,14 @@ import { useRef } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from 'three';
 import GridTile from "./GridTile";
-import Projects from "./projects";
+import { AchievementsRibbon } from "./AchievementsRibbon";
 import Work from "./work";
+import Projects from "./projects";
 
 const Experience = () => {
   const titleRef = useRef<THREE.Group>(null);
   const groupRef = useRef<THREE.Group>(null);
+  const ribbonRef = useRef<THREE.Group>(null);
   const data = useScroll();
   const isActive = usePortalStore((state) => !!state.activePortalId);
 
@@ -20,7 +22,7 @@ const Experience = () => {
     color: 'white',
   };
 
-  useFrame((sate, delta) => {
+  useFrame((_, delta) => {
     const d = data.range(0.8, 0.2);
     const e = data.range(0.7, 0.2);
 
@@ -29,9 +31,13 @@ const Experience = () => {
       groupRef.current.visible = d > 0;
     }
 
+    if (ribbonRef.current) {
+      ribbonRef.current.visible = d > 0;
+    }
+
     if (titleRef.current) {
       titleRef.current.children.forEach((text, i) => {
-        const y =  Math.max(Math.min((1 - d) * (10 - i), 10), 0.5);
+        const y = Math.max(Math.min((1 - d) * (10 - i), 10), 0.5);
         text.position.y = THREE.MathUtils.damp(text.position.y, y, 7, delta);
         /* eslint-disable  @typescript-eslint/no-explicit-any */
         (text as any).fillOpacity = e;
@@ -43,7 +49,7 @@ const Experience = () => {
     const title = 'about me'.toUpperCase();
     const diff = isMobile ? 0.4 : 0.8;
     const spaceWidth = isMobile ? 0.2 : 0.4;
-    
+
     let xOffset = 0;
     return title.split('').map((char, i) => {
       const currentX = xOffset;
@@ -55,34 +61,37 @@ const Experience = () => {
   };
 
   return (
-    <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0 ,-Math.PI / 2]}>
-      {/* <mesh receiveShadow position={[-5, 0, 0.1]}>
-        <planeGeometry args={[10, 5, 1]} />
-        <shadowMaterial opacity={0.1} />
-      </mesh> */}
-      <group rotation={[0, 0, Math.PI / 2]}>
-        <group ref={titleRef} position={[isMobile ? -1.1 : -2.2, 2, -2]}>
-          {getTitle()}
-        </group>
+    <>
+      <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0, -Math.PI / 2]}>
+        <group rotation={[0, 0, Math.PI / 2]}>
+          <group ref={titleRef} position={[isMobile ? -1.1 : -2.2, 2, -2]}>
+            {getTitle()}
+          </group>
 
-        <group position={[0, -1, 0]} ref={groupRef}>
-          <GridTile title='EXPERIENCE'
-            id="work"
-            color='#080c14'
-            textAlign='left'
-            position={new THREE.Vector3(isMobile ? -1 : -2, 0, isMobile ? 0.4 : 0)}>
-            <Work/>
-          </GridTile>
-          <GridTile title='PROJECTS'
-            id="projects"
-            color='#0a0e18'
-            textAlign='right'
-            position={new THREE.Vector3(isMobile ? 1 : 2, 0, 0)}>
-            <Projects/>
-          </GridTile>
+          <group position={[0, -1, 0]} ref={groupRef}>
+            <GridTile title='EXPERIENCE'
+              id="work"
+              color='#080c14'
+              textAlign='left'
+              position={new THREE.Vector3(isMobile ? -1 : -2, 0, isMobile ? 0.4 : 0)}>
+              <Work/>
+            </GridTile>
+            <GridTile title='PROJECTS'
+              id="projects"
+              color='#0a0e18'
+              textAlign='right'
+              position={new THREE.Vector3(isMobile ? 1 : 2, 0, 0)}>
+              <Projects/>
+            </GridTile>
+          </group>
+
+          {/* Ribbon sits outside groupRef so it's always visible when camera is in about-me range */}
+          <group ref={ribbonRef} position={[0, -3.7, 0]}>
+            <AchievementsRibbon />
+          </group>
         </group>
       </group>
-    </group>
+    </>
   );
 };
 

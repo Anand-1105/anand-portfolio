@@ -1,44 +1,77 @@
 'use client';
 
-import { Html } from '@react-three/drei';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 
-const Spline = lazy(() => import('@splinetool/react-spline'));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Spline = lazy(() =>
+  (import('@splinetool/react-spline') as Promise<any>).catch(() => ({ default: () => null }))
+);
 
-export const SplinePreview = () => {
-  // Desktop is a perfect 4x4 square, so we use no clipping.
-  // Mobile is a triangle. The points are [-3, 2], [1, -2], [1, 2].
-  // Relative to a 4x4 square centered at [-1, 0]:
-  // Left is x=-3, right is x=1, top is y=2, bottom is y=-2.
-  // CSS clip-path for that triangle: polygon(0% 0%, 100% 100%, 100% 0%)
-  const clipPath = isMobile ? 'polygon(0% 0%, 100% 100%, 100% 0%)' : 'none';
+interface SplinePreviewProps {
+  visible: boolean;
+}
+
+export const SplinePreview = ({ visible }: SplinePreviewProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.style.opacity = visible ? '1' : '0';
+    }
+  }, [visible]);
+
+  // Forward window mousemove events into the Spline canvas when visible.
+  // The R3F canvas sits on top in the DOM and swallows all pointer events,
+  // so Spline never receives them natively — we re-dispatch them manually.
+  useEffect(() => {
+    if (!visible) return;
+
+    const forward = (e: MouseEvent) => {
+      const splineCanvas = containerRef.current?.querySelector('canvas');
+      if (!splineCanvas) return;
+      // Spline's runtime listens for pointermove on its canvas element
+      splineCanvas.dispatchEvent(new PointerEvent('pointermove', {
+        bubbles: true,
+        cancelable: true,
+        clientX: e.clientX,
+        clientY: e.clientY,
+        screenX: e.screenX,
+        screenY: e.screenY,
+        movementX: e.movementX,
+        movementY: e.movementY,
+        pointerId: 1,
+        pointerType: 'mouse',
+        isPrimary: true,
+      }));
+    };
+
+    window.addEventListener('mousemove', forward);
+    return () => window.removeEventListener('mousemove', forward);
+  }, [visible]);
+
+  if (isMobile) return null;
 
   return (
-    <Html
-      transform
-      distanceFactor={4.9} // Matches the default scale calculation for distance to camera
-      zIndexRange={[0, 0]}
-      position={[0, 0, 0.05]} // Slightly in front of the grid mesh
+    <div
+      ref={containerRef}
+      id="projects-background"
       style={{
-        width: '800px', // high res
-        height: '800px',
-        overflow: 'hidden',
-        clipPath,
+        position: 'fixed',
+        inset: 0,
+        zIndex: 0,
+        opacity: 0,
+        transition: 'opacity 0.6s ease',
         pointerEvents: 'none',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
         background: 'transparent',
-        opacity: 0.8 // Dim as a preview
       }}
     >
-      <Suspense fallback={<div className="text-white text-xs tracking-widest">LOADING...</div>}>
+      <Suspense fallback={null}>
         <Spline
           scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
           style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
         />
       </Suspense>
-    </Html>
+    </div>
   );
 };

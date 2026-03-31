@@ -40,17 +40,18 @@ export function Memory(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/dalithe_persistence_of_memory.glb') as GLTFResult
   return (
     <group {...props} dispose={null}>
-      <mesh castShadow receiveShadow geometry={nodes['Extract2_04_-_Default_0'].geometry} material={materials['04_-_Default']} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes.Cylinder006_Ceramic_0.geometry} material={materials.Ceramic} position={[0.541, 0, 2.543]} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes['Box001_05_-_Default_0'].geometry} material={materials['05_-_Default']} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes['Line005_02_-_Default_0'].geometry} material={materials['02_-_Default']} position={[0, 0.005, 0]} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes['Cylinder003_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-0.584, 0.659, -1.595]} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes['Sphere003_03_-_Default_0'].geometry} material={materials['03_-_Default']} position={[-0.901, 0.331, -1.311]} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes['Line004_16_-_Matte_Plastic_0'].geometry} material={materials['16_-_Matte_Plastic']} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
-      <mesh castShadow receiveShadow geometry={nodes.Cylinder007_Ceramic1_0.geometry} material={materials.Ceramic1} position={[0.541, 0, 2.543]} rotation={[-Math.PI / 2, 0, 0]} scale={0.022} />
+      <mesh geometry={nodes['Extract2_04_-_Default_0'].geometry} material={materials['04_-_Default']} scale={0.021} />
+      <mesh geometry={nodes.Cylinder006_Ceramic_0.geometry} material={materials.Ceramic} position={[0.541, 0, 2.543]} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
+      <mesh geometry={nodes['Box001_05_-_Default_0'].geometry} material={materials['05_-_Default']} scale={0.021} />
+      <mesh geometry={nodes['Line005_02_-_Default_0'].geometry} material={materials['02_-_Default']} position={[0, 0.005, 0]} scale={0.021} />
+      <mesh geometry={nodes['Cylinder003_01_-_Default_0'].geometry} material={materials['01_-_Default']} position={[-0.584, 0.659, -1.595]} scale={0.021} />
+      <mesh geometry={nodes['Sphere003_03_-_Default_0'].geometry} material={materials['03_-_Default']} position={[-0.901, 0.331, -1.311]} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
+      <mesh geometry={nodes['Line004_16_-_Matte_Plastic_0'].geometry} material={materials['16_-_Matte_Plastic']} rotation={[-Math.PI / 2, 0, 0]} scale={0.021} />
+      <mesh geometry={nodes.Cylinder007_Ceramic1_0.geometry} material={materials.Ceramic1} position={[0.541, 0, 2.543]} rotation={[-Math.PI / 2, 0, 0]} scale={0.022} />
     </group>
   )
 }
 
 useGLTF.preload('/models/dalithe_persistence_of_memory.glb')
+
 

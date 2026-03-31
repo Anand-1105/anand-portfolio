@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface Theme {
   type: string;
@@ -21,20 +20,14 @@ interface ThemeStore {
 }
 
 export const useThemeStore = create<ThemeStore>()(
-  persist(
-    (set, get) => ({
-      themes: [...AvailableThemes],
-      theme: AvailableThemes[0],
-      nextTheme: () => {
-        const themes = get().themes;
-        const activeThemeIndex = themes.findIndex(theme => theme.type === get().theme.type);
-        const nextThemeIndex = (activeThemeIndex + 1) % themes.length;
-        set(() => ({ theme: themes[nextThemeIndex] }));
-      },
-    }),
-    {
-      name: "theme-storage",
-      partialize: (state) => ({ theme: state.theme }),
-    }
-  )
+  (set, get) => ({
+    themes: [...AvailableThemes],
+    theme: AvailableThemes[1], // always start dark
+    nextTheme: () => {
+      const themes = get().themes;
+      const activeThemeIndex = themes.findIndex(theme => theme.type === get().theme.type);
+      const nextThemeIndex = (activeThemeIndex + 1) % themes.length;
+      set(() => ({ theme: themes[nextThemeIndex] }));
+    },
+  })
 );
