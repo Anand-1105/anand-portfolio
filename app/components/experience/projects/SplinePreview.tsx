@@ -3,7 +3,6 @@
 import { lazy, Suspense, useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Spline = lazy(() =>
   (import('@splinetool/react-spline') as Promise<{ default: React.ComponentType<{ scene: string; style?: React.CSSProperties }> }>).catch(() => ({ default: () => null }))
 );
