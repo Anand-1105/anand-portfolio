@@ -1,11 +1,26 @@
 'use client';
 
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { Component, lazy, Suspense, useEffect, useRef } from 'react';
 import { isMobile } from 'react-device-detect';
 
 const Spline = lazy(() =>
   (import('@splinetool/react-spline') as Promise<{ default: React.ComponentType<{ scene: string; style?: React.CSSProperties }> }>).catch(() => ({ default: () => null }))
 );
+
+// Error boundary to catch runtime fetch failures from Spline
+class SplineErrorBoundary extends Component<{ children: React.ReactNode }, { failed: boolean }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { failed: false };
+  }
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (this.state.failed) return null;
+    return this.props.children;
+  }
+}
 
 interface SplinePreviewProps {
   visible: boolean;
@@ -20,16 +35,12 @@ export const SplinePreview = ({ visible }: SplinePreviewProps) => {
     }
   }, [visible]);
 
-  // Forward window mousemove events into the Spline canvas when visible.
-  // The R3F canvas sits on top in the DOM and swallows all pointer events,
-  // so Spline never receives them natively — we re-dispatch them manually.
   useEffect(() => {
     if (!visible) return;
 
     const forward = (e: MouseEvent) => {
       const splineCanvas = containerRef.current?.querySelector('canvas');
       if (!splineCanvas) return;
-      // Spline's runtime listens for pointermove on its canvas element
       splineCanvas.dispatchEvent(new PointerEvent('pointermove', {
         bubbles: true,
         cancelable: true,
@@ -65,12 +76,14 @@ export const SplinePreview = ({ visible }: SplinePreviewProps) => {
         background: 'transparent',
       }}
     >
-      <Suspense fallback={null}>
-        <Spline
-          scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-          style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
-        />
-      </Suspense>
+      <SplineErrorBoundary>
+        <Suspense fallback={null}>
+          <Spline
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            style={{ width: '100%', height: '100%', pointerEvents: 'none' }}
+          />
+        </Suspense>
+      </SplineErrorBoundary>
     </div>
   );
 };
